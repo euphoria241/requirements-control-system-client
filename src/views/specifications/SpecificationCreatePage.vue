@@ -197,33 +197,32 @@ export default {
     async saveSpecification() {
       this.validated = this.$refs.form.validate();
       if (this.validated) {
-        console.log(123);
-      }
-      // let specificationObject = this.templateSections.map(section => {
-      //   if (this.sectionsData[section.position].description) {
-      //     section.description = this.sectionsData[section.position].description;
-      //   }
-      //   if (this.sectionsData[section.position].requirements) {
-      //     section.requirements = this.sectionsData[section.position].requirements;
-      //   }
-      //   delete section.createdAt;
-      //   delete section.updatedAt;
-      //   delete section.templateID;
-      //   delete section.id;
-      //   return section;
-      // });
-      // let response = await this.$http({
-      //   url: 'http://localhost:3939/specifications',
-      //   data: {
-      //     title: this.specificationTitle,
-      //     sections: specificationObject,
-      //     author: 1,
-      //     project: parseInt(this.$route.params.projId),
-      //   },
-      //   method: 'POST',
-      // });
+        let specificationObject = this.templateSections.map(section => {
+          if (this.sectionsData[section.position].description) {
+            section.description = this.sectionsData[section.position].description;
+          }
+          if (this.sectionsData[section.position].requirements) {
+            section.requirements = this.sectionsData[section.position].requirements;
+          }
+          delete section.createdAt;
+          delete section.updatedAt;
+          delete section.templateID;
+          delete section.id;
+          return section;
+        });
+        let response = await this.$http({
+          url: 'http://localhost:3939/specifications',
+          data: {
+            title: this.specificationTitle,
+            sections: specificationObject,
+            author: this.$store.getters.user.id,
+            project: parseInt(this.$route.params.projId),
+          },
+          method: 'POST',
+        });
 
-      // this.$router.push({ name: 'Спецификации' });
+        this.$router.push({ name: 'Спецификации' });
+      }
     },
     cancelCreation() {
       this.$router.push({ name: 'Спецификации' });

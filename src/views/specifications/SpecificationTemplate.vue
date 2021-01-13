@@ -1,6 +1,8 @@
 <template>
   <div>
-    <!-- <v-alert color="red" type="error" dismissible elevation="3" class="alert"> Jopa</v-alert> -->
+    <!-- <v-alert color="red" type="error" dismissible elevation="3" class="alert"
+      >Введена не вся информация</v-alert
+    > -->
     <v-form ref="form" v-model="valid" lazy-validation v-on:submit.prevent>
       <v-row>
         <v-col class="ml-4" cols="4">

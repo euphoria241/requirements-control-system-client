@@ -142,7 +142,7 @@ export default {
         type: '',
         priority: '',
         project: this.$route.params.projId,
-        author: 1,
+        author: this.$store.getters.user.id,
       },
       defaultItem: {
         name: '',
@@ -150,7 +150,7 @@ export default {
         type: '',
         priority: '',
         project: this.$route.params.projId,
-        author: 1,
+        author: this.$store.getters.user.id,
       },
       editableID: -1,
       requirements: [],
@@ -173,7 +173,11 @@ export default {
       method: 'GET',
     })
       .then(result => {
-        this.requirements = result.data.map(this.parseDate);
+        let tempData = result.data.map(this.parseDate);
+        this.requirements = tempData.map(req => {
+          const tempUser = this.$store.getters.userList.find(user => user.id == req.author);
+          return { ...req, author: tempUser.username };
+        });
       })
       .catch(err => console.log(err));
   },
@@ -202,7 +206,7 @@ export default {
             });
             let req = response.data;
             req.createdAt = new Date(Date.parse(req.createdAt)).toUTCString();
-            this.requirements.push(req);
+            this.requirements.push({ ...req, author: this.$store.getters.user.username });
           } else {
             const response = await this.$http({
               url: `http://localhost:3939/requirements`,

@@ -22,9 +22,19 @@ export default {
     Navbar,
   },
   mounted() {
-    this.$http({ url: 'http://localhost:3939/projects', method: 'GET' })
-      .then(result => (this.projects = result.data))
-      .catch(err => console.log(err));
+    if (this.$store.getters.isLoggedIn) {
+      this.$http({ url: 'http://localhost:3939/projects', method: 'GET' })
+        .then(result => (this.projects = result.data))
+        .catch(err => console.log(err));
+      this.$http({
+        url: `http://localhost:3939/users`,
+        method: 'GET',
+      })
+        .then(result => {
+          this.$store.dispatch('setUserList', result.data);
+        })
+        .catch(err => console.log(err));
+    }
   },
   computed: {
     projectID() {

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     status: '',
     token: localStorage.getItem('token') || '',
     user: JSON.parse(localStorage.getItem('user')) || {},
+    userList: [],
   },
   mutations: {
     auth_request(state) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     logout(state) {
       state.status = '';
       state.token = '';
+    },
+    setUserList(state, users) {
+      state.userList = users;
     },
   },
   actions: {
@@ -57,11 +61,15 @@ export default new Vuex.Store({
         resolve();
       });
     },
+    setUserList({ commit }, users) {
+      commit('setUserList', users);
+    },
   },
   modules: {},
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     user: state => state.user,
+    userList: state => state.userList,
   },
 });

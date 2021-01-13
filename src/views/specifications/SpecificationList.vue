@@ -54,7 +54,11 @@ export default {
         url: `http://localhost:3939/specifications?project=${this.$route.params.projId}`,
         method: 'GET',
       });
-      this.specifications = response.data;
+      let tempData = response.data;
+      this.specifications = tempData.map(spec => {
+        const tempUser = this.$store.getters.userList.find(user => user.id == spec.author);
+        return { ...spec, author: tempUser.username };
+      });
     } catch (error) {
       console.log(error);
     }
